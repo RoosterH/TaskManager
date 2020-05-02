@@ -1,0 +1,19 @@
+In order to use MongoDB Stitch Browser SDK follow https://docs.mongodb.com/stitch-sdks/js/4.1.0/index.html
+
+I. Need to install 
+    1. npm install mongodb-stitch-browser-sdk
+    2. npm install --save-dev webpack webpack-cli.
+
+II. Add the following field to the "scripts" field of your package.json:
+    "scripts": {
+        "pack": "webpack"
+    }
+
+III. Create directories for your source files, and your distributed files:
+    mkdir src dist
+    Create the file src/index.js 
+    Create the file dist/index.html
+
+IV. Run the webpack bundler by running npm run pack.
+ 
+V. Open dist/index.html in your web browser. If everything was configured correctly, you should see a message in the browser window that you are logged in as an anonymous user.
