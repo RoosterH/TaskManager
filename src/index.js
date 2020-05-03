@@ -2,18 +2,26 @@
 // cannot use require, that is for client side
 import { Stitch, RemoteMongoClient, AnonymousCredential } from 'mongodb-stitch-browser-sdk'
 
+// MongoDB Stitch
 const client = Stitch.initializeDefaultAppClient('taskmanager-aispk');
 const db = client.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas').db('taskmanager');
 const login = client.auth.loginWithCredential(new AnonymousCredential());
 
-// this section defines the funtion calls on the client side
+//const express = require('express');
+
+//const app = new ExpressPlugin();
+
+// this section defines the events on the client side
 $(document).ready(function(){
-  // get all the tasks from mongoDB
+  // event to list all tasks in index.html.  get all the tasks from mongoDB
   getTasks();
-  // get category names from mogoDb
+  // event to get Category for Add Tasks page, get all category_name from mogoDb
   getCategoryOptions();
-  // insert tasks to mongoDB
+  // event for clicking on "Add Task" menu in index.html. insert tasks to mongoDB. #add_task is the form id="add-task" in addTask.html
   $('#add_task').on('submit', addTask);
+  // event for click on "Edit" button in index.html, update tasks to mongoDB
+  $('body').on('click', '.btn-edit-task', setTask);
+  // event to get 
 });
 
 function getTasks() {
@@ -30,7 +38,7 @@ function getTasks() {
       if (task.is_urgent == "true") {
         output += '<span class="lable label-danger"> Urgent</span>';
       }
-      output += '<div class="float-right"><a class ="btn btn-primary" href="#">Edit</a> <a class ="btn btn-danger" href="#">Delete</a></div>';
+      output += '<div class="float-right"><a class ="btn btn-primary btn-edit-task" data-task-name="'+task.task_name+'" data-task-id="'+task._id+'">Edit</a> <a class ="btn btn-danger" href="#">Delete</a></div>';
     });
     output += '</ul>';
     // jQuery, #tasks is corresponding to id tasks in index.html
@@ -38,8 +46,9 @@ function getTasks() {
   }).catch(err => {
       console.error(err)
   });  
-};
+}
 
+// need e to be able to insert to mongoDB
 function addTask(e) {
   var task_name = $('#task_name').val();
   var category = $('#category').val();
@@ -68,7 +77,15 @@ function addTask(e) {
   
   // this will keep the value on the browser 
   e.preventDefault();
-};
+}
+
+function setTask() {
+  // this is from jQuery that gets data-task-id from "btn btn-primary btn-edit-task"
+  var task_id = $(this).data('task-id');
+  sessionStorage.setItem('current_id', task_id);
+  window.location.href='editTask.html';
+  return false;
+}
 
 function getCategoryOptions() {
   login.then(() =>
@@ -82,12 +99,12 @@ function getCategoryOptions() {
       output += '<option value="'+category.category_name+'">'+category.category_name+'</option>';
     });
     output += '</ul>';
-    // jQuery, this category is corresponding to the id category in addTask.html
+    // jQuery, getting category from id category in addTask.html
     $('#category').append(output); 
   }).catch(err => {
       console.error(err)
   });
-};
+}
 
 // testing function to check connection
 function initializeAndLogin() {

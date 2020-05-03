@@ -37,7 +37,8 @@
                 <!-- create a placeholder of div. we will insert div dynamically
                 with js and jquery -->
                 <div id="tasks" class="card-block">
-
+                  <!-- index.js getTasks() dynamically retrieve data from MongoDB for 
+                  documents of task collection -->
                 </div>
             </div>
         </div> <!-- row marketing -->
@@ -47,19 +48,6 @@
         </footer>
   
     </div> <!-- /container -->
-    <script>
-      (function(docs) {
-        
-        console.log('i am in function');
-        var element = (id) => {
-          return document.getElementById(id);
-        }
-
-        // var task = element('tasks');
-
-        
-      })();
-    </script>
     <script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
     <script src="../src/bootstrap.js"></script>
     <script src="main.js"></script> 
